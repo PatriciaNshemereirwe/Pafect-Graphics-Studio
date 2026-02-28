@@ -714,14 +714,14 @@ updateTime();
 
 // 2. ONE-CLICK EMAIL COPY
 function copyEmail() {
-    const email = "pafectgraphics@gmail.com"; // Change to your actual email
+    const email = "pafectgraphics.ug@gmail.com"; // Change to your actual email
     const statusText = document.getElementById('emailStatus');
     const btn = document.getElementById('emailBtn');
 
     navigator.clipboard.writeText(email).then(() => {
         // Visual Feedback for the user
         const originalText = statusText.innerText;
-        statusText.innerText = "COPIED TO CLIPBOARD!";
+        statusText.innerText = "Copied to Clipboard!";
         statusText.style.color = "#4ade80"; // Bright green for success
         
         // Reset after 3 seconds
