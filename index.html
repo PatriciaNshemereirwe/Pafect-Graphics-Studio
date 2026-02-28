@@ -155,16 +155,67 @@ a.group:hover {
     background: transparent !important;
 }
 
+/* UPDATED: Glassmorphism Mobile Menu */
+.mobile-nav-overlay {
+    position: fixed;
+    top: 0;
+    right: -100%; 
+    width: 100%;
+    height: 100vh;
+    /* Semi-transparent dark background */
+    background: rgba(10, 10, 10, 0.8); 
+    /* The Magic Blur */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px); 
+    z-index: 9999;
+    transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.mobile-nav-overlay.active {
+    right: 0;
+    transform: translateX(0);
+}
+
+/* Close Button Styling */
+#closeMenu {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 
 
-
+/* When UI Hidden is active, fade out everything except the background and main titles */
+body.ui-hidden .reveal-item,
+body.ui-hidden nav,
+body.ui-hidden footer,
+body.ui-hidden .explore-btn {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+}
 
 
     </style>
 </head>
 
 <!-- Body -->
+
  <div id="copy-toast" class="fixed top-10 left-1/2 -translate-x-1/2 z-[1000] opacity-0 pointer-events-none transition-all duration-500 transform -translate-y-10">
     <div class="bg-white text-black px-6 py-3 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.4)] flex items-center gap-4 border border-white/20">
         <div class="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
@@ -176,6 +227,13 @@ a.group:hover {
 
 
 <!-- Head -->
+
+<div class="mobile-nav-overlay" id="mobileMenu">
+    <button id="closeMenu" class="absolute top-10 right-10 text-white text-2xl">&times;</button>
+    <a href="#work" class="mobile-nav-link">Work</a>
+    <a href="#studio" class="mobile-nav-link">Studio</a>
+    <a href="#contact-system" class="mobile-nav-link">Start Project</a>
+</div>
 
 <header class="fixed top-0 left-0 w-full z-[100] p-6 pointer-events-none">
     <div class="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
@@ -715,6 +773,57 @@ function setGreeting() {
     }
 }
 setGreeting();
+
+
+const eyeBtn = document.querySelector('.fa-eye').parentElement; // Targets the eye button
+const mainNav = document.querySelector('nav');
+const actionButtons = document.querySelectorAll('.explore-btn, .start-btn'); 
+
+eyeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('focus-mode');
+    
+    // Visual feedback for the eye
+    eyeBtn.style.color = document.body.classList.contains('focus-mode') ? '#f97316' : 'white';
+});
+
+
+// MOBILE MENU LOGIC
+const burgerBtn = document.querySelector('.fa-bars').parentElement;
+const mobileMenu = document.getElementById('mobileMenu');
+const closeBtn = document.getElementById('closeMenu');
+
+burgerBtn.addEventListener('click', () => {
+    mobileMenu.classList.add('active');
+});
+
+closeBtn.addEventListener('click', () => {
+    mobileMenu.classList.remove('active');
+});
+
+// Close menu when a link is clicked
+document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+    });
+});
+
+
+
+const eyeBtn = document.querySelector('.fa-eye').parentElement;
+
+eyeBtn.addEventListener('click', () => {
+    // Toggle a class on the body
+    document.body.classList.toggle('ui-hidden');
+    
+    // Change eye icon color to orange when active
+    const icon = eyeBtn.querySelector('i');
+    if (document.body.classList.contains('ui-hidden')) {
+        icon.style.color = '#f97316';
+        console.log("System: UI Hidden Mode Active");
+    } else {
+        icon.style.color = 'white';
+    }
+});
 
 </script>
 
